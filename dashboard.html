@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Lista de arquivos -->
+        <div class="file-list">
+            <h3>Files</h3>
+            <ul id="file-list"></ul>
+            <button id="add-file-btn">Add New File</button>
+        </div>
+
+        <!-- Conteúdo dos arquivos -->
+        <div class="file-content">
+            <h3>File Content</h3>
+            <textarea id="file-content"></textarea>
+            <button id="save-btn">Save</button>
+        </div>
+    </div>
+
+    <script>
+        const fileListElement = document.getElementById('file-list');
+        const fileContentElement = document.getElementById('file-content');
+        const saveBtn = document.getElementById('save-btn');
+        const addFileBtn = document.getElementById('add-file-btn');
+
+        let files = [
+            { title: "File 1", content: "This is the content of file 1." },
+            { title: "File 2", content: "This is the content of file 2." },
+            { title: "File 3", content: "This is the content of file 3." }
+        ];
+
+        let currentFileIndex = null; // Qual arquivo está sendo editado
+
+        // Carrega o arquivo na lista
+        function loadFiles() {
+            fileListElement.innerHTML = ''; // Limpa a lista antes de editar
+            files.forEach((file, index) => {
+                const li = document.createElement('li');
+                li.textContent = file.title;
+                li.addEventListener('click', () => loadFileContent(index));
+                fileListElement.appendChild(li);
+            });
+        }
+
+        // Carrega o Conteúdo do arquivo
+        function loadFileContent(index) {
+            currentFileIndex = index;
+            fileContentElement.value = files[index].content;
+        }
+
+        // Salva o conteúdo (n ta funfanfo nsei pq)
+        saveBtn.addEventListener('click', () => {
+            if (currentFileIndex !== null) {
+                files[currentFileIndex].content = fileContentElement.value;
+                alert(`File "${files[currentFileIndex].title}" has been saved.`);
+            } else {
+                alert('Please select a file to save.');
+            }
+        });
+
+        // Salva o arquivo novo na lista
+        addFileBtn.addEventListener('click', () => {
+            const newFileName = prompt('Enter the new file name:');
+            if (newFileName) {
+                files.push({ title: newFileName, content: '' });
+                loadFiles();
+            }
+        });
+
+        // Carrega o Doc
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFiles();
+        });
+    </script>
+</body>
+</html>
